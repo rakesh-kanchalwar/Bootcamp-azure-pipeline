@@ -16,7 +16,7 @@ steps:
     version: latest
 
 - script: |
-   ls -la
+   cd package && ls -la
   workingDirectory: '$(System.ArtifactsDirectory)'
   displayName: 'Command Line Script'
 
