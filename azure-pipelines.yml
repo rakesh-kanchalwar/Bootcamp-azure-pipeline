@@ -18,22 +18,21 @@ steps:
 #   inputs:
 #     workingFile: '.npmrc'
 
-# - script: |
-#     npm install
-#   displayName: 'npm install'
-
 - task: Npm@1
+  inputs:
+    command: 'custom'
+    customCommand: 'version  1.0.$(build.buildnumber) --no-git-tag-version'
+    customRegistry: 'useFeed'
+    customFeed: 'b1cb2c79-6494-4aae-9934-2fc8f4c2046f/94a83a3b-7d49-45d7-8a5a-4edaaebb6c3f'
+- task: Npm@2
   inputs:
     command: 'install'
     verbose: true
     customRegistry: 'useFeed'
     customFeed: 'b1cb2c79-6494-4aae-9934-2fc8f4c2046f/94a83a3b-7d49-45d7-8a5a-4edaaebb6c3f'
     
-# - script: |
-#     npm publish
-#   displayName: 'npm publish'
   
-- task: Npm@1
+- task: Npm@3
   inputs:
     command: 'publish'
     verbose: true
