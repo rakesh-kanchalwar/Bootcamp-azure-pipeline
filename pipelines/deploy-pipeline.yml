@@ -1,9 +1,13 @@
+trigger: none
+
 resources:
   pipelines:
   - pipeline: bt-app-deploy # Name of the pipeline resource.
     source: bt-app-build # The name of the pipeline referenced by this pipeline resource.
     project: bootcamp-app # Required only if the source pipeline is in another project
-    trigger: true
+    trigger:
+      branches:
+        - integration
 
 steps:
 - task: DownloadPackage@1
@@ -20,18 +24,18 @@ steps:
   workingDirectory: '$(System.ArtifactsDirectory)'
   displayName: 'Command Line Script'
 
-- task: ExtractFiles@1
-  displayName: 'Extract files '
-  inputs:
-    archiveFilePatterns: '$(System.ArtifactsDirectory)/*.tgz'
-    destinationFolder: temp
-    overwriteExistingFiles: true
+# - task: ExtractFiles@1
+#   displayName: 'Extract files '
+#   inputs:
+#     archiveFilePatterns: '$(System.ArtifactsDirectory)/*.tgz'
+#     destinationFolder: temp
+#     overwriteExistingFiles: true
 
 - task: CopyFiles@2
   displayName: 'Copy files to staging folder'
   inputs:
     sshEndpoint: Server1
-    sourceFolder: 'temp'
+    sourceFolder: '$(System.ArtifactsDirectory)/package/'
     targetFolder: '~/'
     cleanTargetFolder: true
     failOnEmptySource: true
