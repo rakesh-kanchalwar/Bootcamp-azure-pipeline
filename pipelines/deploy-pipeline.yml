@@ -1,0 +1,27 @@
+steps:
+- task: DownloadPackage@1
+  displayName: 'Download Package 3d642cfa-b76a-4e35-96dd-4b48a72b945e'
+  inputs:
+    packageType: npm
+    feed: 'b1cb2c79-6494-4aae-9934-2fc8f4c2046f/94a83a3b-7d49-45d7-8a5a-4edaaebb6c3f'
+    view: '3b4708a0-ee86-48a6-bfa6-3f16263979b4'
+    definition: '3d642cfa-b76a-4e35-96dd-4b48a72b945e'
+    version: latest
+
+steps:
+- task: ExtractFiles@1
+  displayName: 'Extract files '
+  inputs:
+    archiveFilePatterns: '**/*.tgz'
+    destinationFolder: /temp
+    overwriteExistingFiles: true
+
+steps:
+- task: CopyFiles@2
+  displayName: 'Copy files to staging folder'
+  inputs:
+    sshEndpoint: Server1
+    sourceFolder: '/temp'
+    targetFolder: '~/'
+    cleanTargetFolder: true
+    failOnEmptySource: true
