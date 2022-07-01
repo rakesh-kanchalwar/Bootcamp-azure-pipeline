@@ -16,7 +16,7 @@ steps:
     version: latest
 
 - script: |
-   echo la -la
+   ls -la
   workingDirectory: '$(System.ArtifactsDirectory)'
   displayName: 'Command Line Script'
 
