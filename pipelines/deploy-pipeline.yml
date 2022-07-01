@@ -31,11 +31,17 @@ steps:
 #     destinationFolder: temp
 #     overwriteExistingFiles: true
 
+- task: SSH@0
+  displayName: 'create bootcamp-app directory on remote machine'
+  inputs:
+    sshEndpoint: Server1
+    commands: 'cd ~/ && mkdir bootcamp-app'
+
 - task: CopyFiles@2
   displayName: 'Copy files to staging folder'
   inputs:
     sshEndpoint: Server1
-    sourceFolder: '$(System.ArtifactsDirectory)/package/'
-    targetFolder: '~/'
+    sourceFolder: '$(System.ArtifactsDirectory)/package'
+    targetFolder: '~/bootcamp-app'
     cleanTargetFolder: true
     failOnEmptySource: true
