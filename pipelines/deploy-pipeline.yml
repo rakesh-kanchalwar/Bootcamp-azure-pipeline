@@ -1,3 +1,10 @@
+resources:
+  pipelines:
+  - pipeline: bt-app-deploy # Name of the pipeline resource.
+    source: bt-app-build # The name of the pipeline referenced by this pipeline resource.
+    project: bootcamp-app # Required only if the source pipeline is in another project
+    trigger: true
+
 steps:
 - task: DownloadPackage@1
   displayName: 'Download Package 3d642cfa-b76a-4e35-96dd-4b48a72b945e'
@@ -8,6 +15,10 @@ steps:
     definition: '3d642cfa-b76a-4e35-96dd-4b48a72b945e'
     version: latest
 
+- script: |
+   echo dir
+
+  displayName: 'Command Line Script'
 - task: ExtractFiles@1
   displayName: 'Extract files '
   inputs:
