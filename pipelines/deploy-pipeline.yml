@@ -37,11 +37,10 @@ steps:
     sshEndpoint: Server1
     commands: 'cd ~/ && mkdir -p bootcamp-app'
 
-- task: CopyFiles@2
-  displayName: 'Copy files to staging folder'
+- task: CopyFilesOverSSH@0
+  displayName: 'Copy files to bootcamp-app folder'
   inputs:
     sshEndpoint: Server1
     sourceFolder: '$(System.ArtifactsDirectory)/package'
-    targetFolder: 'bootcamp-app'
-    cleanTargetFolder: false
-    failOnEmptySource: true
+    targetFolder: '/home/azureuser/bootcamp-app'
+    cleanTargetFolder: true
