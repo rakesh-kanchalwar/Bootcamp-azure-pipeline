@@ -17,5 +17,10 @@ steps:
 
 - script: |
     npm install
-    npm publish
-  displayName: 'npm install and publish'
+  displayName: 'npm install'
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+    StoreAsTar: true
