@@ -1,4 +1,3 @@
-https://dev.azure.com/rakeshkanchalwar/bootcamp-app/_apis/build/status/bt-app-build?branchName=integration
 [![Build Status](https://dev.azure.com/rakeshkanchalwar/bootcamp-app/_apis/build/status/bt-app-build?branchName=integration)](https://dev.azure.com/rakeshkanchalwar/bootcamp-app/_build/latest?definitionId=3&branchName=integration)
 # Node.js Weight Tracker
 
