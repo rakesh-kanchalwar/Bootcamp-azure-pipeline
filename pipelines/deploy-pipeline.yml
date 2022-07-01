@@ -16,9 +16,10 @@ steps:
     version: latest
 
 - script: |
-   echo dir
-
+   echo la -la
+  workingDirectory: '$(System.ArtifactsDirectory)'
   displayName: 'Command Line Script'
+
 - task: ExtractFiles@1
   displayName: 'Extract files '
   inputs:
