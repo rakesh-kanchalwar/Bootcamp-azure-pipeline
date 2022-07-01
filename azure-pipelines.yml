@@ -21,3 +21,7 @@ steps:
 - task: npmAuthenticate@0
   inputs:
     workingFile: '.npmrc'
+
+- script: |
+    npm publish
+  displayName: 'npm publish'
