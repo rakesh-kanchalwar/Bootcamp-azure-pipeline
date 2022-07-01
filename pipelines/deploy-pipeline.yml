@@ -35,7 +35,7 @@ steps:
   displayName: 'create bootcamp-app directory on remote machine'
   inputs:
     sshEndpoint: Server1
-    commands: 'cd ~/ && mkdir bootcamp-app'
+    commands: 'cd ~/ && mkdir -p bootcamp-app'
 
 - task: CopyFiles@2
   displayName: 'Copy files to staging folder'
