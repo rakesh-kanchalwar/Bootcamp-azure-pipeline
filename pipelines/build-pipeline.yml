@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- master
+- integration
 
 pool:
   vmImage: ubuntu-latest
@@ -24,7 +24,7 @@ steps:
     customCommand: 'version  1.0.$(build.buildid) --no-git-tag-version'
     customRegistry: 'useFeed'
     customFeed: 'b1cb2c79-6494-4aae-9934-2fc8f4c2046f/94a83a3b-7d49-45d7-8a5a-4edaaebb6c3f'
-    
+
 - task: Npm@1
   inputs:
     command: 'install'
