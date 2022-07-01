@@ -43,5 +43,5 @@ steps:
     sshEndpoint: Server1
     sourceFolder: '$(System.ArtifactsDirectory)/package'
     targetFolder: '/home/azureuser/bootcamp-app'
-    cleanTargetFolder: true
+    cleanTargetFolder: false
     failOnEmptySource: true
