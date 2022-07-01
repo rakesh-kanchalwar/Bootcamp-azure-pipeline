@@ -11,15 +11,15 @@ steps:
 - task: ExtractFiles@1
   displayName: 'Extract files '
   inputs:
-    archiveFilePatterns: '**/*.tgz'
-    destinationFolder: /temp
+    archiveFilePatterns: '$(System.ArtifactsDirectory)/*.tgz'
+    destinationFolder: temp
     overwriteExistingFiles: true
 
 - task: CopyFiles@2
   displayName: 'Copy files to staging folder'
   inputs:
     sshEndpoint: Server1
-    sourceFolder: '/temp'
+    sourceFolder: 'temp'
     targetFolder: '~/'
     cleanTargetFolder: true
     failOnEmptySource: true
