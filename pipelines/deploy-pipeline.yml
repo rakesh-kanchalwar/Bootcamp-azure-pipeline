@@ -9,6 +9,9 @@ resources:
       branches:
         - integration
 
+variables:
+- group: app-vars
+
 steps:
 - task: DownloadPackage@1
   displayName: 'Download Package 3d642cfa-b76a-4e35-96dd-4b48a72b945e'
