@@ -9,11 +9,6 @@ resources:
       branches:
         - integration
 
-parameters:
-  - name: servers
-    type: object
-    default: ['prod1', 'prod2', 'prod3']
-
 variables:
 - group: app-vars
 
@@ -21,3 +16,8 @@ stages:
 - stage:
   jobs:
   - template: template-deploy.yml
+    parameters:
+      - name: servers
+        default: ['prod1', 'prod2', 'prod3']
+      - name: deploy-env
+        default: prod

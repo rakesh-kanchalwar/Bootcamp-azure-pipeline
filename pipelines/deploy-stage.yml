@@ -21,3 +21,8 @@ stages:
 - stage:
   jobs:
   - template: template-deploy.yml
+    parameters:
+    - name: servers
+      default: ['stage1', 'stage2', 'stage3']
+    - name: deploy-env
+      default: stage
