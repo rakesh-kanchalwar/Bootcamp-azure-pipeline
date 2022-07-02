@@ -17,14 +17,15 @@ parameters:
 variables:
 - group: app-vars
 
-stages: 
+stages:
 - stage:
   jobs:
   - deployment: deployApp
     displayName: Deploy App
     environment: stage
-    strategy:                  
-      runOnce:                 
+    strategy:
+      runOnce:
         deploy:
-          steps:       
+          steps:
           - template: template-deploy.yml
+            parameters.servers: ['stage1', 'stage2', 'stage3']
