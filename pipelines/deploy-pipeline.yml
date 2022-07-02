@@ -17,7 +17,9 @@ parameters:
 variables:
 - group: app-vars
 
-jobs:
+stages: 
+- stage:
+  jobs:
   - deployment: deployApp
     displayName: Deploy App
     environment: 'stage'
