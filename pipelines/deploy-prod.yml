@@ -8,6 +8,12 @@ resources:
     trigger:
       branches:
         - integration
+        
+parameters:
+  - name: servers
+    type: object
+    default: ['prod1', 'prod2', 'prod3']
+
 
 variables:
 - group: app-vars
@@ -23,5 +29,3 @@ stages:
         deploy:
           steps:       
           - template: template-deploy.yml
-            parameters:
-              servers: ['prod1', 'prod2', 'prod3']
