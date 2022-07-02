@@ -17,17 +17,14 @@ parameters:
 variables:
 - group: app-vars
 
-stages:
-- stage: downloadArtifacts
-  displayName: Download artifacts
-  jobs:
-  - job: artifactDownload
-    displayName: Download app package
-    environment: stage
-    strategy:
-      runOnce:
+jobs:
+  - deployment: deployApp
+    displayName: Deploy App
+    environment: 'stage'
+    strategy:                  # runOnce/blue green/rolling/canary, with lifecycle hooks viz, pre/post healthcheck, swap etc
+      runOnce:                 # default strategy
         deploy:
-          steps:
+          steps:       
           - task: DownloadPackage@1
             displayName: 'Download latest app from artifactory'
             inputs:
@@ -38,29 +35,23 @@ stages:
               version: latest
 
           - script: |
-             cd package && ls -la
+              cd package && ls -la
             workingDirectory: '$(System.ArtifactsDirectory)'
             displayName: 'Check package copied on remote'
 
-    - job: deployPackage
-      displayName: Deploy app on servers
-      environment: stage
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-            - ${{ each server in parameters.servers }}:
-              - task: SSH@0
-                displayName: 'Create bootcamp-app directory on remote machine'
-                inputs:
-                  sshEndpoint: ${{ server }}
-                  commands: 'cd ~/ && mkdir -p $(appName)'
+      
+          - ${{ each server in parameters.servers }}:
+            - task: SSH@0
+              displayName: 'Create bootcamp-app directory on remote machine'
+              inputs:
+                sshEndpoint: ${{ server }}
+                commands: 'cd ~/ && mkdir -p $(appName)'
 
-            - ${{ each server in parameters.servers }}:
-              - task: CopyFilesOverSSH@0
-                displayName: 'Copy files to bootcamp-app folder'
-                inputs:
-                  sshEndpoint: ${{ server }}
-                  sourceFolder: '$(System.ArtifactsDirectory)/package'
-                  targetFolder: '$(targetFolder)'
-                  cleanTargetFolder: true
+          - ${{ each server in parameters.servers }}:
+            - task: CopyFilesOverSSH@0
+              displayName: 'Copy files to bootcamp-app folder'
+              inputs:
+                sshEndpoint: ${{ server }}
+                sourceFolder: '$(System.ArtifactsDirectory)/package'
+                targetFolder: '$(targetFolder)'
+                cleanTargetFolder: true
