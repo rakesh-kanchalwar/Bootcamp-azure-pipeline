@@ -14,7 +14,7 @@ variables:
 
 steps:
 - task: DownloadPackage@1
-  displayName: 'Download Package 3d642cfa-b76a-4e35-96dd-4b48a72b945e'
+  displayName: 'Download latest app from artifactory'
   inputs:
     packageType: npm
     feed: 'b1cb2c79-6494-4aae-9934-2fc8f4c2046f/94a83a3b-7d49-45d7-8a5a-4edaaebb6c3f'
@@ -25,14 +25,7 @@ steps:
 - script: |
    cd package && ls -la
   workingDirectory: '$(System.ArtifactsDirectory)'
-  displayName: 'Command Line Script'
-
-# - task: ExtractFiles@1
-#   displayName: 'Extract files '
-#   inputs:
-#     archiveFilePatterns: '$(System.ArtifactsDirectory)/*.tgz'
-#     destinationFolder: temp
-#     overwriteExistingFiles: true
+  displayName: 'Check package copied on remote'
 
 - task: SSH@0
   displayName: 'create bootcamp-app directory on remote machine'

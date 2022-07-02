@@ -11,11 +11,12 @@ trigger:
 
 steps:
   - task: NodeTool@0
+    displayName: 'Install Node.js'
     inputs:
       versionSpec: '14.x'
-    displayName: 'Install Node.js'
 
   - task: Npm@1
+    displayName: 'Update application version'
     inputs:
       command: 'custom'
       customCommand: 'version  1.0.$(build.buildid) --no-git-tag-version'
@@ -23,6 +24,7 @@ steps:
       customFeed: 'b1cb2c79-6494-4aae-9934-2fc8f4c2046f/94a83a3b-7d49-45d7-8a5a-4edaaebb6c3f'
 
   - task: Npm@1
+    displayName: 'Execute npm install'
     inputs:
       command: 'install'
       verbose: true
@@ -32,6 +34,7 @@ steps:
 
   - task: Npm@1
     inputs:
+    displayName: 'Publish to artifactory'
       command: 'publish'
       verbose: true
       publishRegistry: 'useFeed'
