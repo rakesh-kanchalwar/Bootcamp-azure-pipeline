@@ -9,6 +9,11 @@ resources:
       branches:
         - integration
 
+parameters:
+  - name: servers
+    type: object
+    default: ['Server1', 'Server2', 'Server3']
+
 variables:
 - group: app-vars
 
@@ -27,16 +32,18 @@ steps:
   workingDirectory: '$(System.ArtifactsDirectory)'
   displayName: 'Check package copied on remote'
 
-- task: SSH@0
-  displayName: 'create bootcamp-app directory on remote machine'
-  inputs:
-    sshEndpoint: Server1
-    commands: 'cd ~/ && mkdir -p $(appName)'
+- ${{ each server in parameters.servers }}:
+  - task: SSH@0
+    displayName: 'Create bootcamp-app directory on remote machine'
+    inputs:
+      sshEndpoint: ${{ server }}
+      commands: 'cd ~/ && mkdir -p $(appName)'
 
-- task: CopyFilesOverSSH@0
-  displayName: 'Copy files to bootcamp-app folder'
-  inputs:
-    sshEndpoint: Server1
-    sourceFolder: '$(System.ArtifactsDirectory)/package'
-    targetFolder: '$(targetFolder)'
-    cleanTargetFolder: true
+- ${{ each server in parameters.servers }}:
+  - task: CopyFilesOverSSH@0
+    displayName: 'Copy files to bootcamp-app folder'
+    inputs:
+      sshEndpoint: Server1
+      sourceFolder: '$(System.ArtifactsDirectory)/package'
+      targetFolder: '$(targetFolder)'
+      cleanTargetFolder: true
