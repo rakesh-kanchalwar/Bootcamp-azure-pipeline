@@ -17,7 +17,5 @@ stages:
   jobs:
   - template: template-deploy.yml
     parameters:
-      - name: servers
-        default: ['prod1', 'prod2', 'prod3']
-      - name: deploy-env
-        default: prod
+      servers: ['prod1', 'prod2', 'prod3']
+      deployEnv: prod

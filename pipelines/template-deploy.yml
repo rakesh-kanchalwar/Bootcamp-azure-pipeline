@@ -2,14 +2,14 @@ parameters:
   - name: servers
     type: object
     default: []
-  - name: deploy-env   
+  - name: deployEnv   
     type: string
     default: ''
 
 jobs:
   - deployment: deployApp
     displayName: Deploy App
-    environment: ${{ deploy-env }}
+    environment: ${{ deployEnv }}
     strategy:                  
       runOnce:                 
         deploy:
