@@ -9,11 +9,6 @@ resources:
       branches:
         - integration
 
-parameters:
-  - name: deployEnv   
-    type: string
-    default: prod
-
 variables:
 - group: app-vars
 
@@ -22,7 +17,7 @@ stages:
   jobs:
   - deployment: deployApp
     displayName: Deploy App
-    environment: ${{ deployEnv }}
+    environment: prod
     strategy:                  
       runOnce:                 
         deploy:
@@ -30,4 +25,3 @@ stages:
           - template: template-deploy.yml
             parameters:
               servers: ['prod1', 'prod2', 'prod3']
-              deployEnv: prod
