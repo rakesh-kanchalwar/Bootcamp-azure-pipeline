@@ -1,0 +1,26 @@
+trigger: none
+
+resources:
+  pipelines:
+  - pipeline: bt-app-stage-deploy # Name of the pipeline resource.
+    source: bt-app-build # The name of the pipeline referenced by this pipeline resource.
+    project: bootcamp-app # Required only if the source pipeline is in another project
+    trigger:
+      branches:
+        - integration
+
+parameters:
+  - name: servers
+    type: object
+    default: ['stage1', 'stage2', 'stage3']
+  - name: deploy_env   
+    type: string
+    default: stage
+
+variables:
+- group: app-vars
+
+stages: 
+- stage:
+  jobs:
+  - template: template-deploy.yml
