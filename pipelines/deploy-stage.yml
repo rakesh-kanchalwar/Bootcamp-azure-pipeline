@@ -13,9 +13,6 @@ parameters:
   - name: servers
     type: object
     default: ['stage1', 'stage2', 'stage3']
-  - name: deploy_env   
-    type: string
-    default: stage
 
 variables:
 - group: app-vars

@@ -13,9 +13,6 @@ parameters:
   - name: servers
     type: object
     default: ['prod1', 'prod2', 'prod3']
-  - name: deploy_env   
-    type: string
-    default: prod
 
 variables:
 - group: app-vars
