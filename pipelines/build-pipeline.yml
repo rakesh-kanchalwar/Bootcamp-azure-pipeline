@@ -33,8 +33,8 @@ steps:
 
 
   - task: Npm@1
-    inputs:
     displayName: 'Publish to artifactory'
+    inputs:
       command: 'publish'
       verbose: true
       publishRegistry: 'useFeed'
