@@ -9,33 +9,42 @@ trigger:
     include:
       - integration
 
-steps:
-  - task: NodeTool@0
-    displayName: 'Install Node.js'
-    inputs:
-      versionSpec: '14.x'
+stages:
+- stage: CI
+  displayName: CI Stage
+  jobs:
+  - job: NpmSetup
+    displayName: Npm Setup
+    environment: stage
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - task: NodeTool@0
+              displayName: 'Install Node.js'
+              inputs:
+                versionSpec: '14.x'
 
-  - task: Npm@1
-    displayName: 'Update application version'
-    inputs:
-      command: 'custom'
-      customCommand: 'version  1.0.$(build.buildid) --no-git-tag-version'
-      customRegistry: 'useFeed'
-      customFeed: 'b1cb2c79-6494-4aae-9934-2fc8f4c2046f/94a83a3b-7d49-45d7-8a5a-4edaaebb6c3f'
+            - task: Npm@1
+              displayName: 'Update application version'
+              inputs:
+                command: 'custom'
+                customCommand: 'version  1.0.$(build.buildid) --no-git-tag-version'
+                customRegistry: 'useFeed'
+                customFeed: 'b1cb2c79-6494-4aae-9934-2fc8f4c2046f/94a83a3b-7d49-45d7-8a5a-4edaaebb6c3f'
 
-  - task: Npm@1
-    displayName: 'Execute npm install'
-    inputs:
-      command: 'install'
-      verbose: true
-      customRegistry: 'useFeed'
-      customFeed: 'b1cb2c79-6494-4aae-9934-2fc8f4c2046f/94a83a3b-7d49-45d7-8a5a-4edaaebb6c3f'
+            - task: Npm@1
+              displayName: 'Execute npm install'
+              inputs:
+                command: 'install'
+                verbose: true
+                customRegistry: 'useFeed'
+                customFeed: 'b1cb2c79-6494-4aae-9934-2fc8f4c2046f/94a83a3b-7d49-45d7-8a5a-4edaaebb6c3f'
 
-
-  - task: Npm@1
-    displayName: 'Publish to artifactory'
-    inputs:
-      command: 'publish'
-      verbose: true
-      publishRegistry: 'useFeed'
-      publishFeed: 'b1cb2c79-6494-4aae-9934-2fc8f4c2046f/94a83a3b-7d49-45d7-8a5a-4edaaebb6c3f'
+            - task: Npm@1
+              displayName: 'Publish to artifactory'
+              inputs:
+                command: 'publish'
+                verbose: true
+                publishRegistry: 'useFeed'
+                publishFeed: 'b1cb2c79-6494-4aae-9934-2fc8f4c2046f/94a83a3b-7d49-45d7-8a5a-4edaaebb6c3f'

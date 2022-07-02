@@ -17,33 +17,50 @@ parameters:
 variables:
 - group: app-vars
 
-steps:
-- task: DownloadPackage@1
-  displayName: 'Download latest app from artifactory'
-  inputs:
-    packageType: npm
-    feed: 'b1cb2c79-6494-4aae-9934-2fc8f4c2046f/94a83a3b-7d49-45d7-8a5a-4edaaebb6c3f'
-    view: '3b4708a0-ee86-48a6-bfa6-3f16263979b4'
-    definition: '3d642cfa-b76a-4e35-96dd-4b48a72b945e'
-    version: latest
+stages:
+- stage: downloadArtifacts
+  displayName: Download artifacts
+  jobs:
+  - job: artifactDownload
+    displayName: Download app package
+    environment: stage
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadPackage@1
+            displayName: 'Download latest app from artifactory'
+            inputs:
+              packageType: npm
+              feed: 'b1cb2c79-6494-4aae-9934-2fc8f4c2046f/94a83a3b-7d49-45d7-8a5a-4edaaebb6c3f'
+              view: '3b4708a0-ee86-48a6-bfa6-3f16263979b4'
+              definition: '3d642cfa-b76a-4e35-96dd-4b48a72b945e'
+              version: latest
 
-- script: |
-   cd package && ls -la
-  workingDirectory: '$(System.ArtifactsDirectory)'
-  displayName: 'Check package copied on remote'
+          - script: |
+             cd package && ls -la
+            workingDirectory: '$(System.ArtifactsDirectory)'
+            displayName: 'Check package copied on remote'
 
-- ${{ each server in parameters.servers }}:
-  - task: SSH@0
-    displayName: 'Create bootcamp-app directory on remote machine'
-    inputs:
-      sshEndpoint: ${{ server }}
-      commands: 'cd ~/ && mkdir -p $(appName)'
+    - job: deployPackage
+      displayName: Deploy app on servers
+      environment: stage
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - ${{ each server in parameters.servers }}:
+              - task: SSH@0
+                displayName: 'Create bootcamp-app directory on remote machine'
+                inputs:
+                  sshEndpoint: ${{ server }}
+                  commands: 'cd ~/ && mkdir -p $(appName)'
 
-- ${{ each server in parameters.servers }}:
-  - task: CopyFilesOverSSH@0
-    displayName: 'Copy files to bootcamp-app folder'
-    inputs:
-      sshEndpoint: Server1
-      sourceFolder: '$(System.ArtifactsDirectory)/package'
-      targetFolder: '$(targetFolder)'
-      cleanTargetFolder: true
+            - ${{ each server in parameters.servers }}:
+              - task: CopyFilesOverSSH@0
+                displayName: 'Copy files to bootcamp-app folder'
+                inputs:
+                  sshEndpoint: ${{ server }}
+                  sourceFolder: '$(System.ArtifactsDirectory)/package'
+                  targetFolder: '$(targetFolder)'
+                  cleanTargetFolder: true
