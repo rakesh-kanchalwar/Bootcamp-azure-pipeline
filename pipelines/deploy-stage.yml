@@ -28,4 +28,5 @@ stages:
         deploy:
           steps:
           - template: template-deploy.yml
-            parameters.servers: ['stage1', 'stage2', 'stage3']
+            parameters:
+              servers: ['stage1', 'stage2', 'stage3']
